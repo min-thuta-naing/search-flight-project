@@ -1,0 +1,30 @@
+# Alternative docker-compose สำหรับแก้ปัญหา Permission
+# ใช้ PostgreSQL image แทน TimescaleDB (TimescaleDB จะติดตั้งแยก)
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: flight_search_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: flight_search
+    ports:
+      - "5432:5432"
+    volumes:
+      # PostgreSQL 18+ ต้องการ mount ที่ /var/lib/postgresql
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d flight_search"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  postgres_data:
+    driver: local
+

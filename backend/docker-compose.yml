@@ -1,0 +1,30 @@
+# version: '3.8'  # Removed - obsolete in newer docker-compose
+
+services:
+  postgres:
+    image: timescale/timescaledb:latest-pg18
+    container_name: flight_search_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: flight_search
+      # PostgreSQL 18+ ต้องการ mount ที่ /var/lib/postgresql
+      # แล้วจะสร้าง data directory เป็น subdirectory เอง
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "5433:5432"
+    volumes:
+      # เปลี่ยน mount point เป็น /var/lib/postgresql สำหรับ PostgreSQL 18+
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d flight_search"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  postgres_data:
+    driver: local
+
