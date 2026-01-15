@@ -13,7 +13,7 @@ services:
       # แล้วจะสร้าง data directory เป็น subdirectory เอง
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       # เปลี่ยน mount point เป็น /var/lib/postgresql สำหรับ PostgreSQL 18+
       - postgres_data:/var/lib/postgresql

@@ -103,3 +103,4 @@ export const priceAnalysisSchema = z.object({
   departureDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Departure date must be in YYYY-MM-DD format'),
 });
 
+
