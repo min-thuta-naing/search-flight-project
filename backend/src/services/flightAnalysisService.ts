@@ -1,4 +1,3 @@
-flightAnalysisService.ts 
 import { FlightModel } from '../models/Flight';
 import { PricePredictionService } from './pricePredictionService';
 import { convertToAirportCode } from '../utils/airportCodeConverter';
